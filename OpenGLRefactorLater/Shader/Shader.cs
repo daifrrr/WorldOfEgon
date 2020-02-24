@@ -1,8 +1,8 @@
-﻿﻿using System;
+﻿using System;
 using System.IO;
 using OpenTK.Graphics.OpenGL4;
 
-namespace OpenGLinc.Shaders
+namespace OpenGLRefactorLater
 {
     public sealed class Shader
     {
@@ -26,9 +26,12 @@ namespace OpenGLinc.Shaders
             LoadShader(fragmentShaderSource, ShaderType.FragmentShader, out var fragmentShaderId);
             var info = GL.GetProgramInfoLog(_shaderProgram);
             if(!string.IsNullOrWhiteSpace(info))
-                Console.Error.WriteLine(info);
-            GL.LinkProgram(_shaderProgram);
+                Console.Error.WriteLine($"Error with shader program:_ {info}");
+            GL.BindAttribLocation(_shaderProgram, 0, "aPositions");
+            GL.BindAttribLocation(_shaderProgram, 2, "aTexCoords");
 
+            GL.LinkProgram(_shaderProgram);
+            
             GL.DetachShader(_shaderProgram, vertexShaderId);
             GL.DetachShader(_shaderProgram, fragmentShaderId);
             GL.DeleteShader(fragmentShaderId);
@@ -44,7 +47,7 @@ namespace OpenGLinc.Shaders
             GL.AttachShader(_shaderProgram, shaderId);
             var info = GL.GetShaderInfoLog(shaderId);
             if(!string.IsNullOrWhiteSpace(info))
-                Console.Error.WriteLine(info);
+                Console.Error.WriteLine($"Error with shader [{s}]: {info}");
         }
         
         public void Use()

@@ -1,12 +1,11 @@
-﻿#version 450
+﻿#version 430
 
-layout(location = 0) in vec4 vs_texCoord;
+in vec3 normals;
+in vec2 texCoords;
+layout (binding = 0) uniform sampler2D basic_texture;
 
-out vec4 color;
+out vec4 frag_colour;
 
-uniform sampler2D texture1;
-
-void main(void)
-{
-    color = texelFetch(texture1, ivec2(vs_texCoord.x, vs_texCoord.y), 0);
+void main() {
+    frag_colour = texture(basic_texture, vec2(texCoords.x, texCoords.y));
 }
