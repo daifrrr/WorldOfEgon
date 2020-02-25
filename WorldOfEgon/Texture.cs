@@ -7,7 +7,7 @@ using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using TextureWrapMode = OpenTK.Graphics.OpenGL4.TextureWrapMode;
 
-namespace OpenGLRefactorLater
+namespace WorldOfEgon
 {
     public static class Texture
     {

@@ -8,8 +8,8 @@
     <ProjectGuid>{83C3D9E5-54DA-41A7-88AE-F81A062A9761}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenGLRefactorLater</RootNamespace>
-    <AssemblyName>OpenGLRefactorLater</AssemblyName>
+    <RootNamespace>WorldOfEgon</RootNamespace>
+    <AssemblyName>WorldOfEgon</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <LangVersion>latestmajor</LangVersion>

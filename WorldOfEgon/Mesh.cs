@@ -4,7 +4,7 @@ using Assimp;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 
-namespace OpenGLRefactorLater
+namespace WorldOfEgon
 {
     public class Mesh
     {

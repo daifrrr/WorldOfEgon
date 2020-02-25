@@ -1,6 +1,6 @@
 ﻿using OpenTK;
 
-namespace OpenGLRefactorLater
+namespace WorldOfEgon
 {
     internal class Program
     {

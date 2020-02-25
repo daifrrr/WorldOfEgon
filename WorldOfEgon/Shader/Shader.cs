@@ -2,7 +2,7 @@
 using System.IO;
 using OpenTK.Graphics.OpenGL4;
 
-namespace OpenGLRefactorLater
+namespace WorldOfEgon
 {
     public sealed class Shader
     {

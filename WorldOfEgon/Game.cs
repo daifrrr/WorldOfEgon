@@ -16,7 +16,7 @@ using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 using Vector2 = OpenTK.Vector2;
 using Vector3 = OpenTK.Vector3;
 
-namespace OpenGLRefactorLater
+namespace WorldOfEgon
 {
     internal class Game : GameWindow
     {

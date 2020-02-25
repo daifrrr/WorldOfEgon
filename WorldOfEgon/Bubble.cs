@@ -8,7 +8,7 @@ using SixLabors.ImageSharp.Advanced;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
-namespace OpenGLRefactorLater
+namespace WorldOfEgon
 {
     public class Bubble : IDisposable
     {

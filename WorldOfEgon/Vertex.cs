@@ -1,7 +1,7 @@
 ﻿using OpenTK;
 using OpenTK.Graphics;
 
-namespace OpenGLRefactorLater
+namespace WorldOfEgon
 {
     public struct Vertex
     {
