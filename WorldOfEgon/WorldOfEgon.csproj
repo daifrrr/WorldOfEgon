@@ -80,11 +80,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bubble.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Helper\Utils.cs" />
     <Compile Include="Mesh.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RenderEntities\Bubble.cs" />
+    <Compile Include="RenderEntities\Egon.cs" />
+    <Compile Include="RenderEntities\IRenderable.cs" />
     <Compile Include="Shader\Shader.cs" />
     <Compile Include="Texture.cs" />
     <Compile Include="Vertex.cs" />

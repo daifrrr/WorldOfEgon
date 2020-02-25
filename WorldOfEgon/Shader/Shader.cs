@@ -25,13 +25,13 @@ namespace WorldOfEgon
             LoadShader(vertexShaderSource, ShaderType.VertexShader, out var vertexShaderId);
             LoadShader(fragmentShaderSource, ShaderType.FragmentShader, out var fragmentShaderId);
             var info = GL.GetProgramInfoLog(_shaderProgram);
-            if(!string.IsNullOrWhiteSpace(info))
+            if (!string.IsNullOrWhiteSpace(info))
                 Console.Error.WriteLine($"Error with shader program:_ {info}");
             GL.BindAttribLocation(_shaderProgram, 0, "aPositions");
             GL.BindAttribLocation(_shaderProgram, 2, "aTexCoords");
 
             GL.LinkProgram(_shaderProgram);
-            
+
             GL.DetachShader(_shaderProgram, vertexShaderId);
             GL.DetachShader(_shaderProgram, fragmentShaderId);
             GL.DeleteShader(fragmentShaderId);
@@ -46,10 +46,10 @@ namespace WorldOfEgon
             GL.CompileShader(shaderId);
             GL.AttachShader(_shaderProgram, shaderId);
             var info = GL.GetShaderInfoLog(shaderId);
-            if(!string.IsNullOrWhiteSpace(info))
+            if (!string.IsNullOrWhiteSpace(info))
                 Console.Error.WriteLine($"Error with shader [{s}]: {info}");
         }
-        
+
         public void Use()
         {
             GL.UseProgram(_shaderProgram);
@@ -62,7 +62,7 @@ namespace WorldOfEgon
 
             _disposedValue = true;
         }
-        
+
         ~Shader()
         {
             GL.DeleteProgram(_shaderProgram);

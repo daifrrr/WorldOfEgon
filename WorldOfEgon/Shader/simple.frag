@@ -1,11 +1,8 @@
-﻿#version 430
+﻿#version 430 core
 
-in vec3 normals;
-in vec2 texCoords;
-layout (binding = 0) uniform sampler2D basic_texture;
+out vec4 frag_color;
 
-out vec4 frag_colour;
-
-void main() {
-    frag_colour = texture(basic_texture, vec2(texCoords.x, texCoords.y));
+void main()
+{
+    frag_color = vec4(1.0, 0, 0, 0.5);
 }

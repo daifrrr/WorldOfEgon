@@ -6,7 +6,7 @@ namespace WorldOfEgon
     public struct Vertex
     {
         public const int SizeInBytes = (4 + 4 + 4) * 4;
-        private readonly Vector4 _position; 
+        private readonly Vector4 _position;
         private readonly Vector4 _texCoord;
         private readonly Vector4 _normal;
 
@@ -14,7 +14,7 @@ namespace WorldOfEgon
         {
             _position = position;
             _texCoord = texCoord;
-            _normal =  normal;
+            _normal = normal;
         }
     }
 }

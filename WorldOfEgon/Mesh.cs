@@ -38,6 +38,7 @@ namespace WorldOfEgon
                     points.Add(vp.Z);
                 }
             }
+
             if (mesh.HasNormals)
             {
                 foreach (var nl in mesh.Normals)
@@ -47,7 +48,7 @@ namespace WorldOfEgon
                     normals.Add(nl.Z);
                 }
             }
-            
+
             if (mesh.HasTextureCoords(0))
             {
                 foreach (var tc in mesh.TextureCoordinateChannels[0])
@@ -57,21 +58,22 @@ namespace WorldOfEgon
                     texCoords.Add(tc.Z);
                 }
             }
-            
+
             if (mesh.HasVertices)
             {
                 var vert_vbo = GL.GenBuffer();
                 GL.BindBuffer(BufferTarget.ArrayBuffer, vert_vbo);
                 GL.BufferData
-                    (
+                (
                     BufferTarget.ArrayBuffer,
                     points.Count * sizeof(float),
                     points.ToArray(),
                     BufferUsageHint.StaticDraw
-                    );
+                );
                 GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
                 GL.EnableVertexAttribArray(0);
             }
+
             if (mesh.HasNormals)
             {
                 var normals_vbo = GL.GenBuffer();
@@ -86,6 +88,7 @@ namespace WorldOfEgon
                 GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 0, 0);
                 GL.EnableVertexAttribArray(1);
             }
+
             if (mesh.HasTextureCoords(0))
             {
                 var texcoords_vbo = GL.GenBuffer();
@@ -102,7 +105,7 @@ namespace WorldOfEgon
             }
 
             Console.WriteLine("Mesh Loaded");
-            
+
             return true;
         }
     }

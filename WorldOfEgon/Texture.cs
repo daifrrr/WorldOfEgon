@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using OpenTK.Graphics.OpenGL4;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Advanced;
@@ -13,8 +14,7 @@ namespace WorldOfEgon
     {
         public static int InitTexture(string path)
         {
-            int width, height;
-            var data = LoadTexture(path, out width, out height);
+            var data = LoadTexture(path, out var width, out var height);
             var texId = GL.GenTexture();
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, texId);
@@ -60,6 +60,7 @@ namespace WorldOfEgon
         {
             var image = Image.Load(path) as Image<Rgba32>;
             image.Mutate(x => x.Flip(FlipMode.Vertical));
+            Debug.Assert(image != null, nameof(image) + " != null");
             width = image.Width;
             height = image.Height;
             var tempPixels = image.GetPixelSpan().ToArray();

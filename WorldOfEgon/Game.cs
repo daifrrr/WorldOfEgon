@@ -12,6 +12,8 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using WorldOfEgon.Helper;
+using WorldOfEgon.RenderEntities;
 using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 using Vector2 = OpenTK.Vector2;
 using Vector3 = OpenTK.Vector3;
@@ -21,19 +23,10 @@ namespace WorldOfEgon
     internal class Game : GameWindow
     {
         private static DebugProc _openGlDebugDelegate;
-        private int _egonVao;
-        private int _egonVertexCount;
-        private Shader _shader;
-        private Shader _bubbleShader;
-        private Matrix4 _camera;
         private Vector3 _eye = new Vector3(0, 0, 2);
         private readonly Vector3 _target = Vector3.Zero;
-        private readonly Vector3 _up = new Vector3(0, 1, 0);
-        private Matrix4 _modelMatrix = Matrix4.Identity;
-        private Matrix4 _viewMatrix = Matrix4.Identity;
-        private Matrix4 _projectionMatrix = Matrix4.Identity;
-        private int _texture;
-        private readonly Bubble[] _bubbles = new Bubble[5];
+        private readonly List<IRenderable> _renderObjects = new List<IRenderable>();
+        private Shader _shader;
 
         public Game() : base(1280, 900,
             new GraphicsMode(new ColorFormat(8, 8, 8, 0),
@@ -50,35 +43,34 @@ namespace WorldOfEgon
             Console.WriteLine($"Renderer: {GL.GetString(StringName.Renderer)}");
             Console.WriteLine($"Version: {GL.GetString(StringName.Version)}");
             _openGlDebugDelegate += OpenGlDebugCallback;
-            
         }
 
-        private readonly Random _random = new Random();
-        private double _uTime;
-
-        private float BubbleRandom(float minValue = -1.0f, float maxValue = 1.0f)
-        {
-            return Convert.ToSingle(_random.NextDouble() * (maxValue - minValue) + minValue);
-        }
-
+        
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
             #region OpenGL
-
-            _shader = new Shader(@"Shader\simple.vert", @"Shader\simple.frag");
-            _bubbleShader = new Shader(@"Shader\bubble.vert", @"Shader\bubble.frag");
-            _texture = Texture.InitTexture(@"Resources\egon.png");
-            var mesh = new Mesh().LoadMesh(@"Resources\egon.obj", out _egonVao, out _egonVertexCount);
-            for (var i = 0; i < _bubbles.Length; i++)
-            {
-                var position = new Vector3(BubbleRandom(), BubbleRandom(), BubbleRandom(0.5f, -0.5f));
-                var rotation = Vector3.Zero;
-                var scale = BubbleRandom(0.4f, 0.0f);
-                _bubbles[i] = new Bubble(position, rotation, scale);
-                _bubbles[i].Init();
-            }
+            // var egon = new Egon();
+            // _renderObjects.Add(egon);
+            // var bubbles = new Bubble[5];
+            // for (var i = 0; i < bubbles.Length; i++)
+            // {
+            //     var position = new Vector3(Utils.GenerateRandom(), Utils.GenerateRandom(), Utils.GenerateRandom(0.5f, -0.5f));
+            //     var rotation = Vector3.Zero;
+            //     var scale = Utils.GenerateRandom(0.4f, 0.0f);
+            //     bubbles[i] = new Bubble(position, rotation, scale);
+            //     _renderObjects.Add(bubbles[i]);
+            // }
+            // foreach (var renderObject in _renderObjects)
+            // {
+            //     renderObject.Init();
+            // }
+            
+            _shader = new Shader
+            (
+                @"Shader\simple.vert", @"Shader\simple.frag"    
+            );
 
             SetGlobalSettings();
 
@@ -88,18 +80,9 @@ namespace WorldOfEgon
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
-            _camera = Matrix4.LookAt(_eye, _target, _up);
-            _projectionMatrix =
-                Matrix4.CreatePerspectiveFieldOfView((float) (60.0 * Math.PI / 180.0), (4f / 3f), 0.1f, 100.0f);
-            _viewMatrix = _camera;
-            _modelMatrix = Matrix4.CreateScale(1.0f)
-                           * Matrix4.CreateRotationX(0.0f)
-                           * Matrix4.CreateRotationY(0.0f)
-                           * Matrix4.CreateRotationZ(0.0f)
-                           * Matrix4.CreateTranslation(new Vector3(0, 0, -10));
-            foreach (var bubble in _bubbles)
+            foreach (var renderObject in _renderObjects)
             {
-                bubble.Update(e.Time);
+                renderObject.Update(e.Time);
             }
             if (Keyboard.GetState().IsKeyDown(Key.Escape))
                 Exit();
@@ -110,16 +93,9 @@ namespace WorldOfEgon
             base.OnRenderFrame(e);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             _shader.Use();
-            GL.BindTexture(TextureTarget.Texture2D, _texture);
-            GL.UniformMatrix4(10, false, ref _modelMatrix);
-            GL.UniformMatrix4(11, false, ref _viewMatrix);
-            GL.UniformMatrix4(12, false, ref _projectionMatrix);
-            GL.Uniform1(50, _uTime);
-            GL.BindVertexArray(_egonVao);
-            GL.DrawArrays(PrimitiveType.Triangles, 0, _egonVertexCount);
-            foreach (var bubble in _bubbles)
+            foreach (var renderObject in _renderObjects)
             {
-                bubble.Render(new Vector2(Width, Height));
+                renderObject.Render(new Vector2(Width, Height));
             }
             SwapBuffers();
         }
@@ -147,12 +123,11 @@ namespace WorldOfEgon
         protected override void OnUnload(EventArgs e)
         {
             base.OnUnload(e);
-            _shader.Dispose();
-            _bubbleShader.Dispose();
-            foreach (var bubble in _bubbles)
+            foreach (var renderObject in _renderObjects)
             {
-                bubble.Dispose();
+                renderObject.CleanUp();
             }
+            _shader.Dispose();
         }
 
         private static void OpenGlDebugCallback(DebugSource source, DebugType type, int id, DebugSeverity severity,
